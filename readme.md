@@ -9,7 +9,7 @@ There are two options here:
 2) Run it yourself
     1) Ensure [ImageMagick](https://imagemagick.org/) is installed.
     2) Download all of the files from this repo
-        * Either download code up top using the button
+        * Either click the green `<CODE>` button, then select `Download .zip`
         * Or run the following command: `git clone https://github.com/jakeg2004/RustLens.git`
     3) Navigate to the RustLens directory
     4) In your terminal, type `cargo run` to automatically compile and run.
