@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale="1.0">
+        <title>Rocket Test</title>
+    </head>
+    <body>
+        <h1>Welcome to the rocket example!</h1>
+        <form action="/uploadimg" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".bmp,.jpg,.jpeg,.png"/>
+            <input type="submit" value="Upload Photo" />
+        </form>
+    </body>
+</html>
