@@ -3,10 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale="1.0">
-        <title>Rocket Test</title>
+        <title>RustLens</title>
     </head>
     <body>
-        <h1>Welcome to the rocket example!</h1>
+        <h1>Welcome to RustLens!</h1>
         <form action="/uploadimg" method="post" enctype="multipart/form-data">
             <input type="file" name="file" accept=".bmp,.jpg,.jpeg"/>
             <input type="submit" value="Upload Photo" />
