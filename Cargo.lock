@@ -3,16 +3,6 @@
 version = 4
 
 [[package]]
-name = "RustLens"
-version = "0.1.0"
-dependencies = [
- "bmp",
- "mime",
- "rocket",
- "rocket_dyn_templates",
-]
-
-[[package]]
 name = "addr2line"
 version = "0.24.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1457,6 +1447,16 @@ dependencies = [
  "time",
  "tokio",
  "uncased",
+]
+
+[[package]]
+name = "rust_lens"
+version = "0.1.0"
+dependencies = [
+ "bmp",
+ "mime",
+ "rocket",
+ "rocket_dyn_templates",
 ]
 
 [[package]]

@@ -1,8 +1,8 @@
 [package]
-name = "RustLens"
+name = "rust_lens"
 version = "0.1.0"
 edition = "2021"
-default-run = "RustLens"
+default-run = "rust_lens"
 
 [dependencies]
 rocket = { version = "0.5.1", features = ["json"] }
