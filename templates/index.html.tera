@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        html, body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body > .container {
+            flex: 1;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RustLens</title>
@@ -103,6 +114,10 @@
     });
 
     </script>
-
+    <footer class="bg-light text-center text-muted py-3 mt-5">
+        <div class="container">
+            <small>Made by Jake Gendreau &mdash; <a href="mailto:gend0188@vandals.uidaho.edu">gend0188@vandals.uidaho.edu</a></small>
+        </div>
+    </footer>
 </body>
 </html>

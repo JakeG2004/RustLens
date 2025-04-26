@@ -63,7 +63,7 @@ fn rocket() -> Rocket<Build> {
 
     let config = Config::figment()
         .merge(("limits", limits))
-        .merge(("address", "192.168.1.14"))
+        .merge(("address", "192.168.1.10"))
         .merge(("port", 8080));
 
     rocket::custom(config)
