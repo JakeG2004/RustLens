@@ -4,8 +4,7 @@ RustLens is an image filtering suite built for the web with Rust on the backend.
 
 ## How do I use it?
 There are two options here:
-1) Visit my website! (Preferred)
-    * Once the website is ready, I will link it here. Stay excited!
+1) Visit [my website!](http://jakeg2004.duckdns.org:8080) (Preferred)
 2) Run it yourself
     1) Ensure [ImageMagick](https://imagemagick.org/) is installed.
     2) Download all of the files from this repo
