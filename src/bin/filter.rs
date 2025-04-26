@@ -4,5 +4,5 @@ const SAVE_PATH: &str = "./uploads/uploaded_file.bmp";
 
 fn main()
 {
-    filters::flip_y(SAVE_PATH.to_string());
+    filters::apply_pixelize(SAVE_PATH.to_string());
 }

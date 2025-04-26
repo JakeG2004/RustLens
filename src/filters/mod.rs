@@ -73,6 +73,34 @@ pub fn apply_negative(path: String)
     let _ = buffer.save("./uploads/filtered.bmp");
 }
 
+// Applies sepia filter (thanks for the numbers, https://github.com/abhijitnathwani/image-processing/blob/master/image_colortosepia.c)
+pub fn apply_sepia(path:String)
+{
+    // Check that image can be opened
+    let img = bmp::open(&path).expect("Failed to open image");
+
+    // Open the image
+    let mut buffer = Image::new(img.get_width(), img.get_height());
+
+    // Loop through image coordinates, and convert it to its negative
+    for (x, y) in img.coordinates()
+    {
+        let pixel: Pixel = img.get_pixel(x, y);
+        let r = (pixel.r as f32 * 0.393) + (pixel.g as f32 * 0.769) + (pixel.b as f32 * 0.189);
+        let g = (pixel.r as f32 * 0.349) + (pixel.g as f32 * 0.686) + (pixel.b as f32 * 0.168);
+        let b = (pixel.r as f32 * 0.272) + (pixel.g as f32 * 0.534) + (pixel.b as f32 * 0.131);
+        
+        // Clamp the values to 255 and convert to u8
+        let r = r.min(255.0) as u8;
+        let g = g.min(255.0) as u8;
+        let b = b.min(255.0) as u8;
+        buffer.set_pixel(x, y, Pixel::new(r as u8, g as u8, b as u8));
+    }
+
+    let _ = buffer.save("./uploads/filtered.bmp");
+}
+
+// Flips the image horizontaally
 pub fn flip_x(path: String)
 {
     // Check that image can be opened
@@ -93,6 +121,7 @@ pub fn flip_x(path: String)
     let _ = buffer.save("./uploads/filtered.bmp");
 }
 
+// Flips it vertically
 pub fn flip_y(path: String)
 {
     // Check that image can be opened
@@ -237,5 +266,125 @@ pub fn edge_detect(path: String)
     }
 
     // Save img
+    let _ = buffer.save("./uploads/filtered.bmp");
+}
+
+// Posterize (reduce colors to 6 bits per channel)
+pub fn apply_posterize(path: String)
+{
+    // Check that image can be opened
+    let img = bmp::open(&path).expect("Failed to open image");
+
+    // Open the image
+    let mut buffer = Image::new(img.get_width(), img.get_height());
+
+    let levels = 6;
+
+    // Loop through image coordinates, and convert it to its negative
+    for (x, y) in img.coordinates()
+    {
+        let pixel: Pixel = img.get_pixel(x, y);
+        let r = posterize_channel(pixel.r, levels);
+        let g = posterize_channel(pixel.g, levels);
+        let b = posterize_channel(pixel.b, levels);
+        buffer.set_pixel(x, y, Pixel::new(r, g, b));
+    }
+
+    let _ = buffer.save("./uploads/filtered.bmp");
+}
+
+// Helper function
+fn posterize_channel(value: u8, levels: u8) -> u8
+{
+    let scale = 255.0 / (levels as f32 - 1.0);
+    let level = ((value as f32 / 255.0) * (levels as f32 - 1.0)).round();
+    return (level * scale).round() as u8;
+}
+
+// I messed up pixelate and it made this. Pretty cool! Also reversable.
+pub fn apply_popify(path: String)
+{
+    // Check that image can be opened
+    let img = bmp::open(&path).expect("Failed to open image");
+
+    // Open the image
+    let mut buffer = Image::new(img.get_width(), img.get_height());
+
+    let block_size = 10;
+
+    let height = img.get_height();
+    let width = img.get_width();
+
+    // Loop through image coordinates, and convert it to its negative
+    for (x, y) in img.coordinates()
+    {
+        let pixel: Pixel = img.get_pixel(x, y);
+        buffer.set_pixel(x, y, Pixel::new(pixel.r, u8::MAX - pixel.g, u8::MAX - pixel.b));
+    }
+
+    for y in (0..height).step_by(block_size)
+    {
+        for x in (0..width).step_by(block_size)
+        {
+            let pixel = img.get_pixel(x, y);
+
+            // Loop inside block
+            for dy in 0..block_size
+            {
+                for dx in 0..block_size
+                {
+                    if (x + dx as u32) < width && (y + dy as u32) < height
+                    {
+                        buffer.set_pixel(x, y, pixel);
+                    }
+                }
+            }
+        }
+    }
+
+    let _ = buffer.save("./uploads/filtered.bmp");
+}
+
+// Pixelizes to 10x10 grid
+pub fn apply_pixelize(path: String)
+{
+    // Check that image can be opened
+    let img = bmp::open(&path).expect("Failed to open image");
+
+    // Open the image
+    let mut buffer = Image::new(img.get_width(), img.get_height());
+
+    let block_size = 10;
+
+    let height = img.get_height();
+    let width = img.get_width();
+
+    // Loop through image coordinates, and convert it to its negative
+    for (x, y) in img.coordinates()
+    {
+        let pixel: Pixel = img.get_pixel(x, y);
+        buffer.set_pixel(x, y, Pixel::new(pixel.r, u8::MAX - pixel.g, u8::MAX - pixel.b));
+    }
+
+    for y in (0..height).step_by(block_size)
+    {
+        for x in (0..width).step_by(block_size)
+        {
+            let pixel = img.get_pixel(x, y);
+
+            // Loop inside block
+            for dy in 0..block_size
+            {
+                for dx in 0..block_size
+                {
+                    if (x + dx as u32) < width && (y + dy as u32) < height
+                    {
+                        buffer.set_pixel(x + dx as u32, y + dy as u32, pixel);
+                    }
+                }
+            }
+        }
+    }
+
     let _ = buffer.save("./uploads/filtered.bmp");
 }

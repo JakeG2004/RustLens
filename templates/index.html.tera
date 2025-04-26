@@ -18,9 +18,9 @@
                 <h1 class="text-center mb-4">Welcome to RustLens!</h1>
 
                 <!-- Form -->
-                <form action="/uploadimg" method="post" enctype="multipart/form-data">
+                <form id="uploadForm" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="fileUpload">Choose a photo to upload</label>
+                        <label for="fileUpload">Select your image to filter!</label>
                         <input type="file" class="form-control-file" id="fileUpload" name="file" accept=".bmp,.jpg,.jpeg" required>
                     </div>
 
@@ -32,13 +32,27 @@
                             <option value="invert">Invert Colors</option>
                             <option value="edge-detect">Detect Edges</option>
                             <option value="blur">Blur</option>
+                            <option value="sepia">Sepia</option>
+                            <option value="posterize">Posterize</option>
+                            <option value="popify">Popify</option>
+                            <option value="pixelate">Pixelate</option>
                             <option value="flip-x">Flip X</option>
                             <option value="flip-y">Flip Y</option>
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-block">Upload Photo</button>
+                    <button type="submit" class="btn btn-primary btn-block">Filter Photo</button>
                 </form>
+
+                <div id="resultImage" class="mt-4 text-center">
+                    <!-- This will hold the uploaded images -->
+                </div>
+                <div id="loadingSpinner" class="text-center mt-3" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Processing...</span>
+                    </div>
+                    <p>Applying filter, please wait...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -47,6 +61,48 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        $('#uploadForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent normal form submission
+
+            var formData = new FormData(this);
+
+            // Show the spinner and clear previous image
+            $('#loadingSpinner').show();
+            $('#resultImage').empty();
+
+            $.ajax({
+                url: '/uploadimg',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    // Hide spinner
+                    $('#loadingSpinner').hide();
+
+                    var imageUrl = "uploads/filtered.bmp";
+                    
+                    // Create and show the new image
+                    var imgElement = $('<img>')
+                        // Cache busting
+                        .attr('src', imageUrl + '?t=' + new Date().getTime())
+                        .attr('alt', 'Uploaded Image')
+                        .css('max-width', '100%')
+                        .css('margin-bottom', '10px');
+
+                    $('#resultImage').append(imgElement);
+                },
+                error: function (xhr, status, error) {
+                    $('#loadingSpinner').hide();
+                    alert("There was an error: " + error);
+                }
+            });
+        });
+    });
+
+    </script>
 
 </body>
 </html>
