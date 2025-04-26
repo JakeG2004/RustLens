@@ -62,7 +62,9 @@ fn rocket() -> Rocket<Build> {
         .limit("data-form", ByteUnit::Megabyte(10));
 
     let config = Config::figment()
-        .merge(("limits", limits));
+        .merge(("limits", limits))
+        .merge(("address", "192.168.1.14"))
+        .merge(("port", 8080));
 
     rocket::custom(config)
         .mount("/", routes![index, upload_img])
